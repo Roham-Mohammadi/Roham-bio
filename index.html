@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سازمان حفاظت اطلاعات جمهوری اسلامی ایران - امنیت و اقتدار ملی</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Vazirmatn font for elegant Persian typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for modern icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Define CSS Variables for a consistent and easily modifiable color palette */
+        :root {
+            --color-primary-dark: #0A1128; /* Very Dark Blue - Main background */
+            --color-secondary-dark: #1B263B; /* Darker Blue Gray - Card backgrounds, secondary dark */
+            --color-text-light: #E0E7E9; /* Off-white - Main text color */
+            --color-accent-blue: #0077B6; /* Strong Blue - Primary accent, CTA, highlights */
+            --color-accent-blue-dark: #005F99; /* Darker accent blue for hover */
+            --color-accent-green: #4CAF50; /* Green - Success/positive actions */
+            --color-accent-red: #F44336; /* Red - Error/danger */
+            --color-border-gray: #2C3E50; /* Borders, slightly lighter than card bg */
+            --color-header-border: #004D7A; /* Header bottom border */
+        }
+
+        /* Base styles for the body, applying the Vazirmatn font and a dark theme */
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: var(--color-primary-dark);
+            color: var(--color-text-light);
+            scroll-behavior: smooth; /* Smooth scrolling for "back to top" */
+            /* Subtle background pattern for added texture */
+            background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239C92AC' fill-opacity='0.1' fill-rule='evenodd'%3E%3Cpath d='M0 0h3v3H0V0zm3 3h3v3H3V3z'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* Custom scrollbar for a sleek, modern look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--color-secondary-dark);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--color-border-gray);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--color-accent-blue);
+        }
+
+        /* Keyframe animation for a subtle button press effect */
+        @keyframes press {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.98); }
+            100% { transform: scale(1); }
+        }
+
+        /* Apply the press animation on button click */
+        .btn-press:active {
+            animation: press 0.2s ease-in-out;
+        }
+
+        /* Keyframe animation for fade-in/fade-out for modals and notifications */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(20px); }
+        }
+
+        /* Apply fade-in animation for modal entry */
+        .modal-enter {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+
+        /* Apply fade-out animation for modal exit */
+        .modal-exit {
+            animation: fadeOut 0.3s ease-in forwards;
+        }
+
+        /* Custom styles for mobile navigation (off-canvas menu) */
+        .mobile-menu {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(100%); /* Hidden by default, slides from right */
+        }
+        .mobile-menu.active {
+            transform: translateX(0); /* Visible when active */
+        }
+
+        /* Notification styles */
+        .notification {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+        .notification.hide {
+            animation: fadeOut 0.3s ease-in forwards;
+        }
+
+        /* Hero section specific styles */
+        .hero-section {
+            /* Abstract digital security background */
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://placehold.co/1920x700/0A1128/0077B6?text=Digital+Security+Network') no-repeat center center;
+            background-size: cover;
+            min-height: 75vh; /* Increased height for more impact */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 5px solid var(--color-accent-blue); /* Accent border */
+            box-shadow: inset 0 -10px 20px rgba(0,0,0,0.5); /* Inner shadow for depth */
+        }
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.8) 100%);
+            z-index: 1;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px; /* Wider content area */
+            padding: 2rem;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.6); /* Stronger text shadow */
+        }
+
+        /* Card hover effect with deeper shadow and slight lift */
+        .service-card, .news-card {
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--color-border-gray);
+        }
+        .service-card:hover, .news-card:hover {
+            transform: translateY(-8px) scale(1.02); /* Lift and slightly enlarge */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6); /* Stronger shadow on hover */
+            border-color: var(--color-accent-blue); /* Accent border on hover */
+        }
+
+        /* Button styling with subtle gradient and shadow */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--color-accent-blue) 0%, var(--color-accent-blue-dark) 100%);
+            box-shadow: 0 5px 15px rgba(0, 119, 182, 0.4);
+            transition: all 0.3s ease-in-out;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--color-accent-blue-dark) 0%, var(--color-accent-blue) 100%);
+            box-shadow: 0 8px 20px rgba(0, 119, 182, 0.6);
+        }
+
+        /* Input focus styling */
+        input:focus, textarea:focus {
+            border-color: var(--color-accent-blue) !important;
+            box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.5);
+        }
+
+        /* Header shadow on scroll */
+        .header-scrolled {
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header Section -->
+    <header id="main-header" class="bg-gray-900 p-4 transition-all duration-300 border-b-4 border-[var(--color-header-border)]">
+        <div class="container mx-auto flex justify-between items-center flex-wrap">
+            <!-- Brand Logo/Title with hover effect -->
+            <h1 class="text-4xl font-extrabold text-[var(--color-accent-blue)] mb-2 md:mb-0 transform hover:scale-105 transition duration-300">
+                <span class="text-[var(--color-text-light)]">سازمان حفاظت اطلاعات</span> جمهوری اسلامی ایران
+            </h1>
+
+            <!-- Mobile-specific controls: Hamburger menu -->
+            <div class="md:hidden flex items-center">
+                <button id="mobile-menu-button" class="text-[var(--color-text-light)] hover:text-[var(--color-accent-blue)] focus:outline-none text-2xl p-2 rounded-md btn-press" aria-label="باز کردن منوی موبایل">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <!-- Desktop Navigation Menu -->
+            <nav class="hidden md:flex">
+                <ul class="flex space-x-4 space-x-reverse text-lg">
+                    <li><a href="#" class="text-[var(--color-text-light)] hover:text-[var(--color-accent-blue)] transition duration-300 px-3 py-2 rounded-md" aria-label="خانه">خانه</a></li>
+                    <li><a href="#service-grid-section" class="text-[var(--color-text-light)] hover:text-[var(--color-accent-blue)] transition duration-300 px-3 py-2 rounded-md" aria-label="خدمات">خدمات</a></li>
+                    <li><a href="#news-section" class="text-[var(--color-text-light)] hover:text-[var(--color-accent-blue)] transition duration-300 px-3 py-2 rounded-md" aria-label="اخبار">اخبار</a></li>
+                    <li><a href="#inquiry-button-desktop" class="text-[var(--color-text-light)] hover:text-[var(--color-accent-blue)] transition duration-300 px-3 py-2 rounded-md" aria-label="ارسال درخواست">ارسال درخواست</a></li>
+                    <li><a href="#footer-section" class="text-[var(--color-text-light)] hover:text-[var(--color-accent-blue)] transition duration-300 px-3 py-2 rounded-md" aria-label="تماس با ما">تماس با ما</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Menu (Off-canvas sidebar) -->
+    <div id="mobile-menu" class="mobile-menu fixed top-0 right-0 w-64 h-full bg-[var(--color-secondary-dark)] shadow-lg z-40 p-6 md:hidden">
+        <button id="close-mobile-menu" class="absolute top-4 left-4 text-[var(--color-text-light)] hover:text-[var(--color-accent-red)] text-3xl font-bold focus:outline-none btn-press" aria-label="بستن منوی موبایل">&times;</button>
+        <nav class="mt-10">
+            <ul class="flex flex-col space-y-6 text-xl">
+                <li><a href="#" class="block text-[var(--color-text-light)] hover:text-[var(--color-accent-blue)] transition duration-300 py-2">خانه</a></li>
+                <li><a href="#service-grid-section" class="block text-[var(--color-text-light)] hover:text-[var(--color-accent-blue)] transition duration-300 py-2">خدمات</a></li>
+                <li><a href="#news-section" class="block text-[var(--color-text-light)] hover:text-[var(--color-accent-blue)] transition duration-300 py-2">اخبار</a></li>
+                <li><a href="#inquiry-button-mobile" class="block text-[var(--color-text-light)] hover:text-[var(--color-accent-blue)] transition duration-300 py-2">ارسال درخواست</a></li>
+                <li><a href="#footer-section" class="block text-[var(--color-text-light)] hover:text-[var(--color-accent-blue)] transition duration-300 py-2">تماس با ما</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-section text-white">
+        <div class="hero-content">
+            <h2 class="text-5xl md:text-6xl font-extrabold mb-6 leading-tight drop-shadow-lg">
+                <span class="text-[var(--color-accent-blue)]">امنیت سایبری</span> و اقتدار ملی در فضای اطلاعاتی جمهوری اسلامی ایران
+            </h2>
+            <p class="text-lg md:text-xl mb-8 opacity-90">
+                سازمان حفاظت اطلاعات، پیشرو در صیانت از حریم اطلاعاتی کشور و تقویت بنیان‌های امنیتی ملی با رویکردی نوین و هوشمندانه.
+            </p>
+            <a href="#service-grid-section" class="inline-block btn-primary text-white font-bold py-4 px-10 rounded-full text-xl transition duration-300 transform hover:scale-105 btn-press">
+                مشاهده خدمات ما
+            </a>
+        </div>
+    </section>
+
+    <!-- About Us / Mission Section -->
+    <section id="about-us-section" class="container mx-auto p-6 py-16">
+        <h2 class="text-5xl font-extrabold text-center text-[var(--color-accent-blue)] mb-12 leading-tight">
+            ماموریت و چشم‌انداز سازمان
+        </h2>
+        <div class="bg-[var(--color-secondary-dark)] p-8 rounded-xl shadow-lg border border-[var(--color-border-gray)] text-center max-w-4xl mx-auto">
+            <p class="text-lg text-[var(--color-text-light)] leading-relaxed mb-6">
+                سازمان حفاظت اطلاعات جمهوری اسلامی ایران، به عنوان نهادی حیاتی در ساختار دفاعی و امنیتی کشور، ماموریت دارد تا با بهره‌گیری از دانش روز، فناوری‌های پیشرفته و نیروی انسانی متخصص، از اطلاعات حیاتی کشور در برابر هرگونه تهدید داخلی و خارجی صیانت نماید.
+            </p>
+            <p class="text-lg text-[var(--color-text-light)] leading-relaxed">
+                چشم‌انداز ما، دستیابی به بالاترین سطح امنیت اطلاعاتی در منطقه و جهان، و تبدیل شدن به الگویی برای سازمان‌های مشابه در حفظ اقتدار ملی در فضای سایبری است. ما متعهد به حفاظت از حریم خصوصی شهروندان و تضمین جریان آزاد و امن اطلاعات در چارچوب قوانین جمهوری اسلامی ایران هستیم.
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content Area - Services -->
+    <main class="container mx-auto p-6 flex-grow">
+        <h2 id="service-grid-section" class="text-5xl font-extrabold text-center text-[var(--color-accent-blue)] mb-12 mt-8 leading-tight">
+            خدمات تخصصی سازمان حفاظت اطلاعات
+        </h2>
+
+        <!-- Search Bar with improved styling and accessibility -->
+        <div class="mb-10 flex justify-center">
+            <input type="text" id="search-input" placeholder="جستجو بر اساس نام خدمت..."
+                   class="w-full max-w-md p-4 rounded-lg bg-[var(--color-secondary-dark)] text-[var(--color-text-light)] placeholder-gray-400
+                          focus:outline-none focus:ring-2 focus:ring-[var(--color-accent-blue)] border border-[var(--color-border-gray)] shadow-md text-lg text-right"
+                   dir="rtl" aria-label="جستجوی خدمات">
+        </div>
+
+        <!-- Service Grid where service cards will be dynamically rendered -->
+        <div id="service-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <!-- Service cards will be injected here by JavaScript -->
+        </div>
+    </main>
+
+    <!-- News and Announcements Section -->
+    <section id="news-section" class="container mx-auto p-6 py-16">
+        <h2 class="text-5xl font-extrabold text-center text-[var(--color-accent-blue)] mb-12 leading-tight">
+            آخرین اخبار و اطلاعیه‌ها
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- News Item 1 -->
+            <div class="bg-[var(--color-secondary-dark)] p-6 rounded-xl shadow-lg news-card">
+                <img src="https://placehold.co/600x400/1B263B/0077B6?text=Cyber+Conference" alt="همایش ملی امنیت سایبری" class="w-full h-48 object-cover rounded-md mb-4 border border-[var(--color-border-gray)]">
+                <h3 class="text-2xl font-semibold text-[var(--color-accent-blue)] mb-3">برگزاری موفقیت‌آمیز همایش ملی امنیت سایبری</h3>
+                <p class="text-gray-400 text-sm mb-4">تاریخ: ۱۴۰۳/۰۴/۲۵</p>
+                <p class="text-[var(--color-text-light)] leading-relaxed mb-4">همایش ملی امنیت سایبری با حضور متخصصان برجسته و مقامات عالی‌رتبه در حوزه اطلاعات و ارتباطات برگزار شد. در این همایش، آخرین دستاوردهای سازمان در مقابله با تهدیدات نوین سایبری ارائه گردید.</p>
+                <a href="#" class="text-[var(--color-accent-blue)] hover:text-[var(--color-accent-blue-dark)] font-bold transition duration-200">ادامه مطلب <i class="fas fa-arrow-left mr-2"></i></a>
+            </div>
+            <!-- News Item 2 -->
+            <div class="bg-[var(--color-secondary-dark)] p-6 rounded-xl shadow-lg news-card">
+                <img src="https://placehold.co/600x400/1B263B/0077B6?text=New+Security+Protocol" alt="پروتکل جدید امنیتی" class="w-full h-48 object-cover rounded-md mb-4 border border-[var(--color-border-gray)]">
+                <h3 class="text-2xl font-semibold text-[var(--color-accent-blue)] mb-3">ابلاغ پروتکل‌های جدید حفاظت اطلاعات برای سازمان‌ها</h3>
+                <p class="text-gray-400 text-sm mb-4">تاریخ: ۱۴۰۳/۰۴/۱۸</p>
+                <p class="text-[var(--color-text-light)] leading-relaxed mb-4">سازمان حفاظت اطلاعات، پروتکل‌های به‌روزرسانی شده‌ای را برای افزایش سطح امنیت داده‌ها در نهادهای دولتی و خصوصی ابلاغ کرد. این پروتکل‌ها بر اساس آخرین استانداردهای جهانی تدوین شده‌اند.</p>
+                <a href="#" class="text-[var(--color-accent-blue)] hover:text-[var(--color-accent-blue-dark)] font-bold transition duration-200">ادامه مطلب <i class="fas fa-arrow-left mr-2"></i></a>
+            </div>
+        </div>
+        <div class="text-center mt-12">
+            <a href="#" class="inline-block btn-primary text-white font-bold py-3 px-8 rounded-lg transition duration-300 transform hover:scale-105 btn-press">
+                مشاهده تمام اخبار
+            </a>
+        </div>
+    </section>
+
+    <!-- Service Details Modal -->
+    <div id="service-details-modal" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 hidden p-4"
+         role="dialog" aria-modal="true" tabindex="-1">
+        <div class="bg-[var(--color-secondary-dark)] p-8 rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative border border-[var(--color-border-gray)]">
+            <button id="close-service-details-modal" class="absolute top-4 left-4 text-[var(--color-text-light)] hover:text-[var(--color-accent-red)] text-3xl font-bold focus:outline-none transition duration-300 btn-press" aria-label="بستن جزئیات خدمت">&times;</button>
+            <div id="service-details-content" class="flex flex-col md:flex-row items-center md:items-start gap-6">
+                <!-- Content will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Inquiry Modal -->
+    <div id="inquiry-modal" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 hidden p-4"
+         role="dialog" aria-modal="true" tabindex="-1">
+        <div class="bg-[var(--color-secondary-dark)] p-8 rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto relative border border-[var(--color-border-gray)]">
+            <button id="close-inquiry-modal" class="absolute top-4 left-4 text-[var(--color-text-light)] hover:text-[var(--color-accent-red)] text-3xl font-bold focus:outline-none transition duration-300 btn-press" aria-label="بستن فرم درخواست">&times;</button>
+            <h3 class="text-3xl font-bold text-[var(--color-accent-blue)] mb-8 text-center border-b border-[var(--color-border-gray)] pb-4">ارسال درخواست پشتیبانی</h3>
+            <form id="inquiry-form" class="space-y-6">
+                <div>
+                    <label for="inquiry-name" class="block text-[var(--color-text-light)] text-lg font-medium mb-2">نام و نام خانوادگی:</label>
+                    <input type="text" id="inquiry-name" name="name" required
+                           class="w-full p-3 rounded-lg bg-[var(--color-primary-dark)] text-[var(--color-text-light)] placeholder-gray-400
+                                  focus:outline-none focus:ring-2 focus:ring-[var(--color-accent-blue)] border border-[var(--color-border-gray)] shadow-md text-lg text-right"
+                           dir="rtl" placeholder="نام خود را وارد کنید">
+                </div>
+                <div>
+                    <label for="inquiry-contact" class="block text-[var(--color-text-light)] text-lg font-medium mb-2">شماره تماس / ایمیل:</label>
+                    <input type="text" id="inquiry-contact" name="contact" required
+                           class="w-full p-3 rounded-lg bg-[var(--color-primary-dark)] text-[var(--color-text-light)] placeholder-gray-400
+                                  focus:outline-none focus:ring-2 focus:ring-[var(--color-accent-blue)] border border-[var(--color-border-gray)] shadow-md text-lg text-right"
+                           dir="rtl" placeholder="شماره تماس یا ایمیل خود را وارد کنید">
+                </div>
+                <div>
+                    <label for="inquiry-subject" class="block text-[var(--color-text-light)] text-lg font-medium mb-2">موضوع درخواست:</label>
+                    <input type="text" id="inquiry-subject" name="subject" required
+                           class="w-full p-3 rounded-lg bg-[var(--color-primary-dark)] text-[var(--color-text-light)] placeholder-gray-400
+                                  focus:outline-none focus:ring-2 focus:ring-[var(--color-accent-blue)] border border-[var(--color-border-gray)] shadow-md text-lg text-right"
+                           dir="rtl" placeholder="موضوع درخواست خود را وارد کنید">
+                </div>
+                <div>
+                    <label for="inquiry-message" class="block text-[var(--color-text-light)] text-lg font-medium mb-2">متن درخواست:</label>
+                    <textarea id="inquiry-message" name="message" rows="6" required
+                              class="w-full p-3 rounded-lg bg-[var(--color-primary-dark)] text-[var(--color-text-light)] placeholder-gray-400
+                                     focus:outline-none focus:ring-2 focus:ring-[var(--color-accent-blue)] border border-[var(--color-border-gray)] text-right resize-y"
+                              dir="rtl" placeholder="درخواست خود را اینجا بنویسید..."></textarea>
+                </div>
+                <button type="submit" id="submit-inquiry-button" class="mt-8 w-full btn-primary text-white font-bold py-4 px-8 rounded-lg transition duration-300 transform hover:scale-105 focus:outline-none btn-press" aria-label="ارسال درخواست به پشتیبانی">
+                    ارسال درخواست به پشتیبانی
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Global Notification Container (for toast messages) -->
+    <div id="notification-container" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] space-y-3 w-full max-w-xs md:max-w-sm">
+        <!-- Notifications will be appended here -->
+    </div>
+
+    <!-- Footer Section -->
+    <footer id="footer-section" class="bg-gray-900 p-6 text-center text-gray-500 text-sm mt-10 shadow-inner border-t-4 border-[var(--color-header-border)]">
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-right md:text-center">
+            <div>
+                <h4 class="text-lg font-semibold text-[var(--color-accent-blue)] mb-3">درباره سازمان</h4>
+                <p class="leading-relaxed text-[var(--color-text-light)]">سازمان حفاظت اطلاعات جمهوری اسلامی ایران، نهادی پیشرو در تامین امنیت سایبری و حفاظت از اطلاعات ملی، با تکیه بر دانش و فناوری روز.</p>
+            </div>
+            <div>
+                <h4 class="text-lg font-semibold text-[var(--color-accent-blue)] mb-3">تماس با ما</h4>
+                <p class="text-[var(--color-text-light)]">آدرس: ایران، تهران، خیابان شهید بهشتی، پلاک ۱۲۳</p>
+                <p class="text-[var(--color-text-light)]">تلفن: <a href="tel:+982112345678" class="hover:text-[var(--color-accent-blue)] transition duration-200">۰۲۱-۱۲۳۴۵۶۷۸</a></p>
+                <p class="text-[var(--color-text-light)]">پشتیبانی: <a href="#" id="inquiry-button-footer" class="hover:text-[var(--color-accent-blue)] transition duration-200 cursor-pointer">ارسال درخواست پشتیبانی</a></p>
+                <p class="text-[var(--color-text-light)]">ایمیل: <a href="mailto:info@ir-info-protection.gov" class="hover:text-[var(--color-accent-blue)] transition duration-200">info@ir-info-protection.gov</a></p>
+            </div>
+            <div>
+                <h4 class="text-lg font-semibold text-[var(--color-accent-blue)] mb-3">لینک‌های مفید</h4>
+                <ul>
+                    <li><a href="#" class="text-[var(--color-text-light)] hover:text-[var(--color-accent-blue)] transition duration-200">سوالات متداول</a></li>
+                    <li><a href="#" class="text-[var(--color-text-light)] hover:text-[var(--color-accent-blue)] transition duration-200">قوانین و مقررات</a></li>
+                    <li><a href="#" class="text-[var(--color-text-light)] hover:text-[var(--color-accent-blue)] transition duration-200">همکاری با ما</a></li>
+                </ul>
+            </div>
+        </div>
+        <p class="mt-8 border-t border-[var(--color-border-gray)] pt-6 text-[var(--color-text-light)]">&copy; 2025 سازمان حفاظت اطلاعات جمهوری اسلامی ایران. تمامی حقوق محفوظ است.</p>
+        <p class="mt-3 text-[var(--color-text-light)]">با افتخار، حافظ امنیت و اقتدار شما هستیم.</p>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="fixed bottom-6 right-6 btn-primary text-white p-4 rounded-full shadow-lg transition duration-300 transform hover:scale-110 focus:outline-none hidden btn-press" aria-label="بازگشت به بالای صفحه">
+        <i class="fas fa-arrow-up text-xl"></i>
+    </button>
+
+    <script>
+        // Array of sample services for the organization
+        const services = [
+            {
+                id: 1,
+                name: "مشاوره امنیت سایبری",
+                image: "https://placehold.co/400x300/1B263B/0077B6?text=Cyber+Security+Consulting",
+                description: "ارائه مشاوره‌های تخصصی در زمینه امنیت شبکه‌ها و سیستم‌های اطلاعاتی.",
+                fullDescription: "خدمات مشاوره امنیت سایبری ما شامل ارزیابی آسیب‌پذیری‌ها، تست نفوذ، طراحی معماری امن، و ارائه راهکارهای جامع برای حفاظت از داده‌ها و زیرساخت‌های حیاتی شماست. تیم متخصصان ما با بهره‌گیری از به‌روزترین دانش و فناوری، امنیت دیجیتال شما را تضمین می‌کنند."
+            },
+            {
+                id: 2,
+                name: "حفاظت از داده‌های حساس",
+                image: "https://placehold.co/400x300/1B263B/0077B6?text=Sensitive+Data+Protection",
+                description: "پیاده‌سازی راهکارهای پیشرفته برای حفظ محرمانگی و یکپارچگی اطلاعات.",
+                fullDescription: "ما با ارائه راهکارهای رمزنگاری پیشرفته، مدیریت دسترسی، و سیستم‌های تشخیص نفوذ، از داده‌های حساس شما در برابر تهدیدات داخلی و خارجی محافظت می‌کنیم. هدف ما اطمینان از محرمانگی، یکپارچگی و دسترس‌پذیری اطلاعات حیاتی شماست."
+            },
+            {
+                id: 3,
+                name: "تحلیل تهدیدات و هوش امنیتی",
+                image: "https://placehold.co/400x300/1B263B/0077B6?text=Threat+Intelligence",
+                description: "شناسایی، تحلیل و پیش‌بینی تهدیدات سایبری برای جلوگیری از حملات.",
+                fullDescription: "خدمات هوش امنیتی ما شامل جمع‌آوری و تحلیل اطلاعات مربوط به تهدیدات نوظهور، گروه‌های هکری، و روش‌های حمله است. با این اطلاعات، سازمان‌ها می‌توانند پیش‌بینی‌های لازم را انجام داده و اقدامات پیشگیرانه موثری را برای مقابله با حملات احتمالی اتخاذ کنند."
+            },
+            {
+                id: 4,
+                name: "آموزش و آگاهی‌بخشی امنیتی",
+                image: "https://placehold.co/400x300/1B263B/0077B6?text=Security+Awareness+Training",
+                description: "برگزاری دوره‌های آموزشی برای افزایش آگاهی کارکنان در برابر تهدیدات سایبری.",
+                fullDescription: "مهم‌ترین خط دفاعی هر سازمان، نیروی انسانی آن است. ما با برگزاری کارگاه‌ها و دوره‌های آموزشی تخصصی، کارکنان شما را با اصول امنیت سایبری، شناسایی حملات فیشینگ، و بهترین روش‌های حفاظت از اطلاعات آشنا می‌کنیم تا به یک دیوار دفاعی مستحکم تبدیل شوند."
+            },
+            {
+                id: 5,
+                name: "پاسخ به حوادث امنیتی",
+                image: "https://placehold.co/400x300/1B263B/0077B6?text=Incident+Response",
+                description: "مدیریت و مهار سریع حوادث امنیتی برای به حداقل رساندن خسارات.",
+                fullDescription: "در صورت بروز حادثه امنیتی، تیم پاسخ به حوادث ما به سرعت وارد عمل شده و با شناسایی منبع حمله، مهار نفوذ، بازیابی سیستم‌ها و ارائه گزارش کامل، به شما کمک می‌کند تا خسارات را به حداقل رسانده و از تکرار آن جلوگیری کنید."
+            },
+            {
+                id: 6,
+                name: "امنیت زیرساخت‌های حیاتی",
+                image: "https://placehold.co/400x300/1B263B/0077B6?text=Critical+Infrastructure+Security",
+                description: "حفاظت از سیستم‌های کنترل صنعتی و زیرساخت‌های ملی در برابر حملات سایبری.",
+                fullDescription: "امنیت زیرساخت‌های حیاتی مانند شبکه‌های برق، آب، گاز و حمل‌ونقل از اهمیت بالایی برخوردار است. ما با پیاده‌سازی راهکارهای امنیتی چندلایه، از این زیرساخت‌ها در برابر حملات سایبری که می‌توانند منجر به اختلالات گسترده شوند، محافظت می‌کنیم."
+            },
+            {
+                id: 7,
+                name: "امنیت ابری و مجازی‌سازی",
+                image: "https://placehold.co/400x300/1B263B/0077B6?text=Cloud+Security",
+                description: "تضمین امنیت داده‌ها و برنامه‌ها در محیط‌های ابری و مجازی.",
+                fullDescription: "با گسترش استفاده از سرویس‌های ابری، امنیت این محیط‌ها از اهمیت ویژه‌ای برخوردار است. ما راهکارهایی را برای تامین امنیت داده‌ها، برنامه‌ها و زیرساخت‌های ابری شما ارائه می‌دهیم تا از مزایای فناوری ابری با اطمینان کامل بهره‌مند شوید."
+            },
+            {
+                id: 8,
+                name: "بازرسی و ممیزی امنیتی",
+                image: "https://placehold.co/400x300/1B263B/0077B6?text=Security+Audit",
+                description: "انجام بازرسی‌های دوره‌ای و ممیزی‌های امنیتی برای شناسایی ضعف‌ها.",
+                fullDescription: "بازرسی و ممیزی‌های امنیتی منظم، بخش جدایی‌ناپذیری از یک استراتژی امنیتی جامع است. تیم ما با انجام ارزیابی‌های دقیق، ضعف‌ها و نقاط آسیب‌پذیر سیستم‌های شما را شناسایی کرده و گزارش‌های جامعی برای بهبود وضعیت امنیتی ارائه می‌دهد."
+            }
+        ];
+
+        // --- Telegram Bot API Configuration ---
+        // !!! IMPORTANT SECURITY WARNING !!!
+        // Exposing your bot token and chat ID directly in client-side code (like this JavaScript file)
+        // is a SIGNIFICANT SECURITY RISK. Anyone viewing your website's source code can see and misuse
+        // your bot token, potentially sending spam, accessing private chats, or performing other
+        // unauthorized actions.
+        //
+        // FOR PRODUCTION ENVIRONMENTS, IT IS HIGHLY RECOMMENDED TO:
+        // 1. Create a simple backend server (e.g., Node.js, Python, PHP) to handle Telegram API calls.
+        // 2. Store your TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID securely on that server (e.g., in environment variables).
+        // 3. Your frontend (this HTML/JS) should send the order details to your backend server.
+        // 4. The backend server then makes the secure call to the Telegram API.
+        //
+        // This setup protects your sensitive credentials.
+        const TELEGRAM_BOT_TOKEN = '7851495833:AAElHSZL5-sQGfINLEZjev9a3SCAGuACC8s'; // <--- Your Telegram Bot Token
+        const TELEGRAM_CHAT_ID = '7912866585';     // <--- Your Telegram Chat ID
+        // ------------------------------------
+
+        // Get references to DOM elements for manipulation
+        const mainHeader = document.getElementById('main-header');
+        const serviceGrid = document.getElementById('service-grid');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const closeMobileMenuButton = document.getElementById('close-mobile-menu');
+        const searchInput = document.getElementById('search-input');
+        const backToTopButton = document.getElementById('back-to-top');
+        const notificationContainer = document.getElementById('notification-container');
+
+        const serviceDetailsModal = document.getElementById('service-details-modal');
+        const closeServiceDetailsModalButton = document.getElementById('close-service-details-modal');
+        const serviceDetailsContent = document.getElementById('service-details-content');
+
+        const inquiryModal = document.getElementById('inquiry-modal');
+        const closeInquiryModalButton = document.getElementById('close-inquiry-modal');
+        const inquiryForm = document.getElementById('inquiry-form');
+        const submitInquiryButton = document.getElementById('submit-inquiry-button');
+
+        const inquiryButtonDesktop = document.querySelector('a[href="#inquiry-button-desktop"]');
+        const inquiryButtonMobile = document.querySelector('a[href="#inquiry-button-mobile"]');
+        const inquiryButtonFooter = document.getElementById('inquiry-button-footer');
+
+
+        /**
+         * Renders services based on a search query.
+         * If query is empty, renders all services.
+         * @param {string} query - The search query.
+         */
+        function renderServices(query = '') {
+            serviceGrid.innerHTML = ''; // Clear any existing service cards
+            const filteredServices = services.filter(service =>
+                service.name.toLowerCase().includes(query.toLowerCase()) ||
+                service.description.toLowerCase().includes(query.toLowerCase()) ||
+                (service.fullDescription && service.fullDescription.toLowerCase().includes(query.toLowerCase()))
+            );
+
+            if (filteredServices.length === 0) {
+                serviceGrid.innerHTML = '<p class="col-span-full text-center text-gray-400 text-xl py-10">خدمتی با این مشخصات یافت نشد.</p>';
+                return;
+            }
+
+            filteredServices.forEach(service => {
+                const serviceCard = `
+                    <div class="bg-[var(--color-secondary-dark)] rounded-xl shadow-lg overflow-hidden cursor-pointer service-card" data-id="${service.id}">
+                        <img src="${service.image}" alt="${service.name}" class="w-full h-56 object-cover object-center rounded-t-xl transition-opacity duration-300" onerror="this.onerror=null;this.src='https://placehold.co/400x300/2C3E50/ECF0F1?text=Image+Not+Found';">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-semibold text-[var(--color-accent-blue)] mb-2">${service.name}</h3>
+                            <p class="text-[var(--color-text-light)] text-sm mb-4 h-12 overflow-hidden">${service.description}</p>
+                            <div class="flex flex-col items-center mt-4">
+                                <button data-service-id="${service.id}" class="view-details-btn btn-primary text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-md transform hover:scale-105 focus:outline-none btn-press w-full" aria-label="مشاهده جزئیات خدمت">
+                                    مشاهده جزئیات
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                serviceGrid.innerHTML += serviceCard;
+            });
+
+            // Attach event listeners to all "View Details" buttons after they are rendered
+            document.querySelectorAll('.view-details-btn').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    event.stopPropagation(); // Prevent service card click from also triggering
+                    const serviceId = parseInt(event.target.dataset.serviceId);
+                    showServiceDetails(serviceId);
+                });
+            });
+
+            // Attach event listeners for quick view on service cards
+            document.querySelectorAll('.service-card').forEach(card => {
+                card.addEventListener('click', (event) => {
+                    const serviceId = parseInt(event.currentTarget.dataset.id);
+                    showServiceDetails(serviceId);
+                });
+            });
+        }
+
+        /**
+         * Displays the service details modal for a given service.
+         * @param {number} serviceId - The ID of the service to display.
+         */
+        function showServiceDetails(serviceId) {
+            const service = services.find(s => s.id === serviceId);
+            if (!service) return;
+
+            serviceDetailsContent.innerHTML = `
+                <div class="md:w-1/2 flex justify-center">
+                    <img src="${service.image}" alt="${service.name}" class="w-full max-w-sm rounded-lg shadow-lg border border-[var(--color-border-gray)]" onerror="this.onerror=null;this.src='https://placehold.co/400x300/2C3E50/ECF0F1?text=Image+Not+Found';">
+                </div>
+                <div class="md:w-1/2 text-right">
+                    <h3 class="text-3xl font-bold text-[var(--color-accent-blue)] mb-4">${service.name}</h3>
+                    <p class="text-[var(--color-text-light)] text-md mb-6 leading-relaxed">${service.fullDescription || service.description}</p>
+                    <button id="open-inquiry-from-details" class="btn-primary text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-md transform hover:scale-105 focus:outline-none btn-press w-full">
+                        ارسال درخواست
+                    </button>
+                </div>
+            `;
+
+            openModal(serviceDetailsModal);
+
+            // Attach event listener for "Send Request" button in service details
+            document.getElementById('open-inquiry-from-details').addEventListener('click', () => {
+                closeModal(serviceDetailsModal);
+                openModal(inquiryModal);
+            });
+        }
+
+        /**
+         * Displays a temporary notification (toast message) at the bottom center.
+         * @param {string} message - The message to display.
+         * @param {string} type - Type of message ('success', 'info', 'error').
+         */
+        function showNotification(message, type = 'info') {
+            const notificationDiv = document.createElement('div');
+            let bgColor = '';
+            let iconHtml = '';
+
+            switch (type) {
+                case 'success':
+                    bgColor = 'bg-[var(--color-accent-green)]';
+                    iconHtml = '<i class="fas fa-check-circle ml-2"></i>';
+                    break;
+                case 'error':
+                    bgColor = 'bg-[var(--color-accent-red)]';
+                    iconHtml = '<i class="fas fa-times-circle ml-2"></i>';
+                    break;
+                case 'info':
+                default:
+                    bgColor = 'bg-[var(--color-accent-blue)]';
+                    iconHtml = '<i class="fas fa-info-circle ml-2"></i>';
+                    break;
+            }
+
+            notificationDiv.className = `notification flex items-center p-4 rounded-lg shadow-xl text-white ${bgColor}`;
+            notificationDiv.innerHTML = `${iconHtml}<span>${message}</span>`;
+            notificationContainer.appendChild(notificationDiv);
+
+            // Set a timeout to hide and remove the notification
+            setTimeout(() => {
+                notificationDiv.classList.add('hide');
+                notificationDiv.addEventListener('animationend', () => notificationDiv.remove());
+            }, 3000); // Notification disappears after 3 seconds
+        }
+
+        /**
+         * Debounce function to limit how often a function can run.
+         * Useful for events like 'input' on search fields.
+         * @param {Function} func - The function to debounce.
+         * @param {number} delay - The delay in milliseconds.
+         * @returns {Function} The debounced function.
+         */
+        function debounce(func, delay) {
+            let timeout;
+            return function(...args) {
+                const context = this;
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(context, args), delay);
+            };
+        }
+
+        /**
+         * Opens a modal and applies entry animation.
+         * @param {HTMLElement} modalElement - The modal DOM element.
+         */
+        function openModal(modalElement) {
+            modalElement.classList.remove('hidden');
+            modalElement.classList.add('modal-enter');
+            modalElement.focus(); // Focus the modal for accessibility
+        }
+
+        /**
+         * Closes a modal and applies exit animation.
+         * @param {HTMLElement} modalElement - The modal DOM element.
+         */
+        function closeModal(modalElement) {
+            modalElement.classList.add('modal-exit');
+            modalElement.addEventListener('animationend', () => {
+                modalElement.classList.add('hidden');
+                modalElement.classList.remove('modal-exit', 'modal-enter');
+            }, { once: true });
+        }
+
+        // Event listener to open the inquiry modal (desktop)
+        inquiryButtonDesktop.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent default link behavior
+            openModal(inquiryModal);
+        });
+
+        // Event listener to open the inquiry modal (mobile)
+        inquiryButtonMobile.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent default link behavior
+            openModal(inquiryModal);
+            mobileMenu.classList.remove('active'); // Close mobile menu if open
+        });
+
+        // Event listener to open the inquiry modal from footer
+        inquiryButtonFooter.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent default link behavior
+            openModal(inquiryModal);
+        });
+
+        // Event listener to close the inquiry modal when the close button is clicked
+        closeInquiryModalButton.addEventListener('click', () => {
+            closeModal(inquiryModal);
+        });
+
+        // Event listener to close the inquiry modal when clicking outside the modal content
+        inquiryModal.addEventListener('click', (event) => {
+            if (event.target === inquiryModal) { // Check if the click was directly on the modal background
+                closeModal(inquiryModal);
+            }
+        });
+
+        // Event listener for the "Submit Inquiry" button
+        inquiryForm.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevent default form submission
+
+            const name = document.getElementById('inquiry-name').value;
+            const contact = document.getElementById('inquiry-contact').value;
+            const subject = document.getElementById('inquiry-subject').value;
+            const message = document.getElementById('inquiry-message').value;
+
+            if (!name || !contact || !subject || !message) {
+                showNotification('لطفاً تمام فیلدهای درخواست را پر کنید.', 'error');
+                return;
+            }
+
+            // Check if Telegram credentials are set
+            if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+                showNotification('خطا: توکن ربات تلگرام یا Chat ID تنظیم نشده است.', 'error');
+                return;
+            }
+
+            // Build the Telegram message for the support request
+            let telegramMessage = `
+                <b>درخواست پشتیبانی جدید</b>\n\n
+                <b>نام و نام خانوادگی:</b> ${name}\n
+                <b>شماره تماس / ایمیل:</b> ${contact}\n
+                <b>موضوع درخواست:</b> ${subject}\n
+                <b>متن درخواست:</b>\n${message}\n\n
+                ---
+                <i>این پیام از طریق وبسایت سازمان حفاظت اطلاعات ارسال شده است.</i>
+            `;
+
+            const telegramApiUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+
+            try {
+                // Disable button and show loading indicator
+                submitInquiryButton.disabled = true;
+                submitInquiryButton.innerHTML = '<i class="fas fa-spinner fa-spin ml-2"></i> در حال ارسال...';
+                submitInquiryButton.classList.add('opacity-70', 'cursor-not-allowed');
+
+                const response = await fetch(telegramApiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: telegramMessage,
+                        parse_mode: 'HTML' // Crucial for rendering HTML content
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.ok) {
+                    showNotification('درخواست شما با موفقیت به پشتیبانی ارسال شد.', 'success');
+                    inquiryForm.reset(); // Clear form fields
+                    closeModal(inquiryModal); // Close inquiry modal
+                } else {
+                    console.error('Telegram API Error:', data);
+                    showNotification(`خطا در ارسال درخواست به تلگرام: ${data.description || 'نامشخص'}`, 'error');
+                }
+            } catch (error) {
+                console.error('Network or API call error:', error);
+                showNotification('خطایی در اتصال به تلگرام رخ داد. لطفاً دوباره تلاش کنید.', 'error');
+            } finally {
+                // Re-enable button
+                submitInquiryButton.disabled = false;
+                submitInquiryButton.innerHTML = 'ارسال درخواست به پشتیبانی';
+                submitInquiryButton.classList.remove('opacity-70', 'cursor-not-allowed');
+            }
+        });
+
+        // Mobile menu toggle
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
+        });
+
+        closeMobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+        });
+
+        // Close mobile menu when clicking outside
+        mobileMenu.addEventListener('click', (event) => {
+            if (event.target === mobileMenu) {
+                mobileMenu.classList.remove('active');
+            }
+        });
+
+        // Close service details modal
+        closeServiceDetailsModalButton.addEventListener('click', () => {
+            closeModal(serviceDetailsModal);
+        });
+        serviceDetailsModal.addEventListener('click', (event) => {
+            if (event.target === serviceDetailsModal) {
+                closeModal(serviceDetailsModal);
+            }
+        });
+
+        // Global Escape key listener to close open modals
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                if (!inquiryModal.classList.contains('hidden')) {
+                    closeModal(inquiryModal);
+                }
+                if (!serviceDetailsModal.classList.contains('hidden')) {
+                    closeModal(serviceDetailsModal);
+                }
+                if (mobileMenu.classList.contains('active')) {
+                    mobileMenu.classList.remove('active');
+                }
+            }
+        });
+
+        // Debounced search functionality
+        const debouncedRenderServices = debounce(renderServices, 300); // 300ms delay
+        searchInput.addEventListener('input', (event) => {
+            const query = event.target.value;
+            debouncedRenderServices(query);
+        });
+
+        // Back to Top button functionality and header shadow
+        window.addEventListener('scroll', () => {
+            // Add shadow to header on scroll
+            if (window.scrollY > 0) {
+                mainHeader.classList.add('header-scrolled');
+            } else {
+                mainHeader.classList.remove('header-scrolled');
+            }
+
+            // Show/hide back to top button
+            if (window.scrollY > 300) { // Show button after scrolling 300px
+                backToTopButton.classList.remove('hidden');
+            } else {
+                backToTopButton.classList.add('hidden');
+            }
+        });
+
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth' // Smooth scroll to top
+            });
+        });
+
+        // Initial setup when the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            renderServices(); // Display all services on page load
+        });
+    </script>
+</body>
+</html>
+
